@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo</title>
-    <script src="./index.html"></script>
+    <script src="./main.js" defer></script>
+    <script src="https://kit.fontawesome.com/e9c70608c2.js" crossorigin="anonymous" defer></script>
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -19,10 +20,22 @@
                 <li id="this-week">This Week</li>
             </ul>
             <ul class="lists">
-                <li id="shopping">Shopping</li>
-                <li id="workout">Workout</li>
-                <li id="household">Household</li>
-                <li id="work">Work</li>
+                <div class="list">
+                    <li id="shopping">Shopping</li>
+                    <i class="far fa-trash-alt"></i>
+                </div>
+                <div class="list">
+                    <li id="workout">Workout</li>
+                    <i class="far fa-trash-alt"></i>
+                </div>
+                <div class="list">
+                    <li id="household">Household</li>
+                    <i class="far fa-trash-alt"></i>
+                </div>
+                <div class="list">
+                    <li id="work">Work</li>
+                    <i class="far fa-trash-alt"></i>
+                </div>
             </ul>
             <button class="add-list-button">Add List</button>
             <form class="add-list-form invisible">
@@ -37,34 +50,34 @@
             </form>
             <div class="current-todos">
                 <div class="todo">
-                    <button class="todo-done-button"></button>
+                    <i class="far fa-square"></i>
                     <p>Buy milk</p>
-                    <button class="todo-delete-button">Delete</button>
+                    <i class="far fa-trash-alt"></i>
                 </div>
                 <div class="todo">
-                    <button class="todo-done-button"></button>
+                    <i class="far fa-check-square"></i>
                     <p>Swim</p>
-                    <button class="todo-delete-button">Delete</button>
+                    <i class="far fa-trash-alt"></i>
                 </div>
                 <div class="todo">
-                    <button class="todo-done-button"></button>
+                    <i class="far fa-check-square"></i>
                     <p>Water plants</p>
-                    <button class="todo-delete-button">Delete</button>
+                    <i class="far fa-trash-alt"></i>
                 </div>
                 <div class="todo">
-                    <button class="todo-done-button"></button>
+                    <i class="far fa-check-square"></i>
                     <p>Call Boss</p>
-                    <button class="todo-delete-button">Delete</button>
+                    <i class="far fa-trash-alt"></i>
                 </div>
                 <div class="todo">
-                    <button class="todo-done-button"></button>
+                    <i class="far fa-check-square"></i>
                     <p>Buy cucumber</p>
-                    <button class="todo-delete-button">Delete</button>
+                    <i class="far fa-trash-alt"></i>
                 </div>
                 <div class="todo">
-                    <button class="todo-done-button"></button>
+                    <i class="far fa-check-square"></i>
                     <p>But meat</p>
-                    <button class="todo-delete-button">Delete</button>
+                    <i class="far fa-trash-alt"></i>
                 </div>
             </div>
         </main>
