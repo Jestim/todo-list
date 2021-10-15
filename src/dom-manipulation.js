@@ -3,8 +3,6 @@ const listsElement = document.querySelector('.lists');
 const todoDisplayElement = document.querySelector('.todo-display');
 
 function createListElement(newListName) {
-    console.log('createListElement Called');
-
     const listElement = document.createElement('li');
     listElement.classList.add('list');
 
@@ -39,9 +37,27 @@ function createTodoElement(newTodoData) {
     todoDisplayElement.appendChild(todoElement);
 }
 
+function deleteListElement(listElement) {
+    const lists = document.querySelectorAll('.list');
+    lists.forEach(list => {
+        if (list === listElement) {
+            list.remove();
+        }
+    });
+}
 
+function deleteTodoElement(todoElement) {
+    const todos = document.querySelectorAll('.todo');
+    todos.forEach(todo => {
+        if (todo === todoElement) {
+            todo.remove();
+        }
+    });
+}
 
 export {
     createListElement,
-    createTodoElement
+    createTodoElement,
+    deleteListElement,
+    deleteTodoElement
 };

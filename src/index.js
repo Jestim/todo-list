@@ -1,4 +1,4 @@
-import { createListElement, createTodoElement } from "./dom-manipulation";
+import { createListElement, createTodoElement, deleteListElement, deleteTodoElement } from "./dom-manipulation";
 
 createListElement('Test');
 createTodoElement('Köp test');
