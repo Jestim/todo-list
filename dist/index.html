@@ -20,28 +20,19 @@
                 <li id="this-week">This Week</li>
             </ul>
             <ul class="lists">
-                <li id="default" class="list">
-                    <p>Default</p>
-                    <i id="delete-list-button" class="far fa-trash-alt"></i>
-                </li>
             </ul>
             <button class="add-list-button">Add List</button>
-            <form class="add-list-form invisible">
-                <input class="new-list" type="text" placeholder="New List">
-                <button class="submit-list-button">Add</button>
+            <form onsubmit="return false;" class="add-list-form invisible">
+                <input class="new-list" type="text" placeholder="New List" autocomplete="off">
+                <button class="new-list-button">Add</button>
             </form>
         </nav>
         <main class="todo-display">
-            <form class="add-todo-form">
-                <input class="new-todo" type="text" placeholder="New Todo">
-                <button class="add-todo-button">Add</button>
+            <form onsubmit="return false;" class="add-todo-form">
+                <input class="new-todo" type="text" placeholder="New Todo" autocomplete="off">
+                <button class="new-todo-button">Add</button>
             </form>
             <div class="current-todos">
-                <div id="buy-milk" class="todo">
-                    <i class="far fa-square"></i>
-                    <p>Buy milk</p>
-                    <i class="far fa-trash-alt"></i>
-                </div>
             </div>
         </main>
     </div>
