@@ -73,6 +73,11 @@ body {
     margin: 0.3rem;
 }
 
+.list-active {
+    transition: all 0.5s ease-in-out;
+    background-color: aqua;
+}
+
 .delete-list-button {
     width: auto;
     height: 2rem;

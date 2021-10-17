@@ -1,6 +1,8 @@
+import { mainListContainer, displaySelectedList, deleteList, deleteTodo } from "./index";
+
 // DOM Elements
 const listsElement = document.querySelector('.lists');
-const todoDisplayElement = document.querySelector('.todo-display');
+const currentTodosElement = document.querySelector('.current-todos');
 
 function createListElement(newListName) {
     const listElement = document.createElement('li');
@@ -8,11 +10,12 @@ function createListElement(newListName) {
 
     const listNameElement = document.createElement('p');
     listNameElement.textContent = newListName;
+    listNameElement.addEventListener('click', displaySelectedList);
     listElement.appendChild(listNameElement);
 
     const deleteListIconElement = document.createElement('i');
     deleteListIconElement.classList.add('far', 'fa-trash-alt');
-    deleteListIconElement.addEventListener('click', deleteListElement);
+    deleteListIconElement.addEventListener('click', deleteList);
     listElement.appendChild(deleteListIconElement);
 
     listsElement.appendChild(listElement);
@@ -33,10 +36,10 @@ function createTodoElement(newTodoData) {
 
     const deleteTodoIconElement = document.createElement('i');
     deleteTodoIconElement.classList.add('far', 'fa-trash-alt');
-    deleteTodoIconElement.addEventListener('click', deleteTodoElement)
+    deleteTodoIconElement.addEventListener('click', deleteTodo)
     todoElement.appendChild(deleteTodoIconElement);
 
-    todoDisplayElement.appendChild(todoElement);
+    currentTodosElement.appendChild(todoElement);
 }
 
 function deleteListElement(listElement) {
@@ -67,9 +70,16 @@ function changeCheckSquareState(e) {
     }
 }
 
+function clearTodoDisplay() {
+    while (currentTodosElement.firstChild) {
+        currentTodosElement.lastChild.remove();
+    }
+}
+
 export {
     createListElement,
     createTodoElement,
     deleteListElement,
-    deleteTodoElement
+    deleteTodoElement,
+    clearTodoDisplay
 };
