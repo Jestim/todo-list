@@ -1,4 +1,4 @@
-import { mainListContainer, displaySelectedList, deleteList, deleteTodo } from "./index";
+import { mainListContainer, displaySelectedList, deleteList, deleteTodo, toggleTodoCheckedState } from "./index";
 
 // DOM Elements
 const listsElement = document.querySelector('.lists');
@@ -16,7 +16,11 @@ function createListElement(newListName) {
 
     const deleteListIconElement = document.createElement('i');
     deleteListIconElement.classList.add('far', 'fa-trash-alt');
-    deleteListIconElement.addEventListener('click', deleteList);
+    deleteListIconElement.addEventListener('click', (e) => {
+        deleteList(e.target.previousSibling.textContent);
+        deleteListElement(e);
+        e.stopPropagation();
+    });
     listElement.appendChild(deleteListIconElement);
 
     listsElement.appendChild(listElement);
@@ -28,7 +32,10 @@ function createTodoElement(newTodoData) {
 
     const checkIconElement = document.createElement('i');
     checkIconElement.classList.add('far', 'fa-square');
-    checkIconElement.addEventListener('click', changeCheckSquareState);
+    checkIconElement.addEventListener('click', (e) => {
+        changeCheckSquareState(e);
+        toggleTodoCheckedState(e.target.nextSibling.textContent);
+    });
     todoElement.appendChild(checkIconElement);
 
     const todoDataElement = document.createElement('p');

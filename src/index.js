@@ -97,6 +97,15 @@ function createListObject(listName) {
         return todos;
     }
 
+    function getTodo(todoName) {
+        for (let i = 0; i < todos.length; i++) {
+            if (todos[i].getName() === todoName) {
+                return todos[i];
+            }
+        }
+        return null;
+    }
+
     function addTodo(newTodo) {
         todos.push(newTodo);
     }
@@ -112,6 +121,7 @@ function createListObject(listName) {
     return {
         getName,
         getTodos,
+        getTodo,
         addTodo,
         removeTodo
     }
@@ -125,7 +135,19 @@ function createTodoObject(todoName) {
         return name;
     }
 
-    return { getName };
+    function toggleIsDone() {
+        isDone = !isDone;
+    }
+
+    function getIsDone() {
+        return isDone;
+    }
+
+    return {
+        getName,
+        toggleIsDone,
+        getIsDone
+    };
 }
 
 function createNewList(listName) {
@@ -136,10 +158,24 @@ function createNewList(listName) {
     createListElement(listName);
 }
 
-function deleteList(list) {
-    deleteListElement(list);
-    mainListContainer.removeList(list.target.previousSibling.textContent);
-    list.stopPropagation();
+function deleteList(listName) {
+    const todos = mainListContainer.getList(listName).getTodos();
+    const allList = mainListContainer.getList('All');
+    const allListTodos = allList.getTodos();
+
+    todos.forEach(todo => {
+        if (allListTodos.includes(todo)) {
+            allList.removeTodo(todo);
+        }
+    });
+    mainListContainer.removeList(listName);
+
+    if (listName === mainListContainer.getCurrentList().getName()) {
+        mainListContainer.setCurrentList(allList);
+        displaySelectedList(allList.getName());
+    }
+
+    displaySelectedList(mainListContainer.getCurrentList().getName());
 }
 
 function displaySelectedList(listName) {
@@ -195,12 +231,20 @@ function deleteTodo(todo) {
     }
 }
 
+function toggleTodoCheckedState(todoName) {
+    const currentList = mainListContainer.getCurrentList();
+    const todo = currentList.getTodo(todoName);
+    todo.toggleIsDone();
+}
+
 
 // Test -----------------------------------------------------
 const allList = createListObject('All');
 mainListContainer.addList(allList);
 mainListContainer.setCurrentList(allList);
 displaySelectedList(allList.getName());
+
+createNewList('Test');
 // ----------------------------------------------------------
 
 export {
@@ -208,4 +252,5 @@ export {
     displaySelectedList,
     deleteList,
     deleteTodo,
+    toggleTodoCheckedState,
 };
