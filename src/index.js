@@ -9,6 +9,7 @@ const newListButton = document.querySelector('.new-list-button');
 const newTodoInput = document.querySelector('.new-todo');
 const newTodoButton = document.querySelector('.new-todo-button');
 
+const allListElement = document.getElementById('all');
 
 // Hide "Add List" button when clicked and show input for new list
 addListButton.addEventListener('click', (e) => {
@@ -28,6 +29,10 @@ newListButton.addEventListener('click', () => {
 newTodoButton.addEventListener('click', () => {
     createNewTodo(newTodoInput.value);
     newTodoInput.value = '';
+});
+
+allListElement.addEventListener('click', (e) => {
+    displaySelectedList(e.target.textContent);
 });
 
 let mainListContainer = (() => {
@@ -81,8 +86,6 @@ let mainListContainer = (() => {
 })();
 
 function createListObject(listName) {
-    createListElement(listName);
-
     let name = listName;
     let todos = [];
 
@@ -115,8 +118,6 @@ function createListObject(listName) {
 }
 
 function createTodoObject(todoName) {
-    createTodoElement(todoName);
-
     let name = todoName;
     let isDone = false;
 
@@ -128,28 +129,55 @@ function createTodoObject(todoName) {
 }
 
 function createNewList(listName) {
+    if (listName === '') {
+        return;
+    }
     mainListContainer.addList(createListObject(listName));
+    createListElement(listName);
 }
 
 function deleteList(list) {
     deleteListElement(list);
     mainListContainer.removeList(list.target.previousSibling.textContent);
+    list.stopPropagation();
 }
 
-function displaySelectedList(selectedList) {
+function displaySelectedList(listName) {
     clearTodoDisplay();
-    const listName = selectedList.target.textContent
     const list = mainListContainer.getList(listName);
     mainListContainer.setCurrentList(list);
+    setActiveList(list);
     const todos = list.getTodos();
     todos.forEach(todo => {
         createTodoElement(todo.getName());
     });
 }
 
+function setActiveList(list) {
+    const listElements = document.querySelectorAll('.list');
+
+    for (let i = 0; i < listElements.length; i++) {
+        if (listElements[i].classList.contains('list-active')) {
+            listElements[i].classList.remove('list-active');
+        }
+
+        if (listElements[i].firstChild.textContent == list.getName()) {
+            listElements[i].classList.add('list-active');
+        }
+    };
+}
+
 function createNewTodo(todoName) {
+    if (todoName === '') {
+        return;
+    }
     let currentList = mainListContainer.getCurrentList();
-    currentList.addTodo(createTodoObject(todoName));
+    let newTodo = createTodoObject(todoName);
+    currentList.addTodo(newTodo);
+    if (currentList.getName() != 'All') {
+        mainListContainer.getList('All').addTodo(newTodo);
+    }
+    createTodoElement(todoName);
 }
 
 function deleteTodo(todo) {
@@ -168,14 +196,12 @@ function deleteTodo(todo) {
 }
 
 
-
-createNewList('Default');
-const defaultList = mainListContainer.getList('Default');
-defaultList.addTodo(createTodoObject('Buy Milk'));
-
-createNewList('Test');
-const testList = mainListContainer.getList('Test');
-testList.addTodo(createTodoObject('Run!'));
+// Test -----------------------------------------------------
+const allList = createListObject('All');
+mainListContainer.addList(allList);
+mainListContainer.setCurrentList(allList);
+displaySelectedList(allList.getName());
+// ----------------------------------------------------------
 
 export {
     mainListContainer,

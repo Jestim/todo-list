@@ -7,10 +7,11 @@ const currentTodosElement = document.querySelector('.current-todos');
 function createListElement(newListName) {
     const listElement = document.createElement('li');
     listElement.classList.add('list');
-
+    listElement.addEventListener('click', (e) => {
+        displaySelectedList(e.target.firstChild.textContent);
+    });
     const listNameElement = document.createElement('p');
     listNameElement.textContent = newListName;
-    listNameElement.addEventListener('click', displaySelectedList);
     listElement.appendChild(listNameElement);
 
     const deleteListIconElement = document.createElement('i');
