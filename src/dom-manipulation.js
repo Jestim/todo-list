@@ -26,12 +26,16 @@ function createListElement(newListName) {
     listsElement.appendChild(listElement);
 }
 
-function createTodoElement(newTodoData) {
+function createTodoElement(newTodoData, isDone) {
     const todoElement = document.createElement('div');
     todoElement.classList.add('todo');
 
     const checkIconElement = document.createElement('i');
-    checkIconElement.classList.add('far', 'fa-square');
+    if (isDone) {
+        checkIconElement.classList.add('far', 'fa-check-square');
+    } else {
+        checkIconElement.classList.add('far', 'fa-square');
+    }
     checkIconElement.addEventListener('click', (e) => {
         changeCheckSquareState(e);
         toggleTodoCheckedState(e.target.nextSibling.textContent);

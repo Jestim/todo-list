@@ -35,6 +35,7 @@ allListElement.addEventListener('click', (e) => {
     displaySelectedList(e.target.textContent);
 });
 
+// Keeps track of all lists
 let mainListContainer = (() => {
     let lists = [];
     let currentList;
@@ -75,15 +76,26 @@ let mainListContainer = (() => {
         }
     }
 
+    function toJSON() {
+        return lists;
+    }
+
+    function fromJSON(listsData) {
+        lists = listsData;
+    }
+
     return {
         addList,
         getList,
         getAllLists,
         removeList,
         setCurrentList,
-        getCurrentList
+        getCurrentList,
+        toJSON,
+        fromJSON
     }
 })();
+
 
 function createListObject(listName) {
     let name = listName;
@@ -119,6 +131,8 @@ function createListObject(listName) {
     }
 
     return {
+        listName,
+        todos,
         getName,
         getTodos,
         getTodo,
@@ -127,28 +141,26 @@ function createListObject(listName) {
     }
 }
 
-function createTodoObject(todoName) {
-    let name = todoName;
-    let isDone = false;
 
-    function getName() {
-        return name;
-    }
-
-    function toggleIsDone() {
-        isDone = !isDone;
-    }
-
-    function getIsDone() {
-        return isDone;
-    }
-
+const createTodoObject = (todoName, done = false) => {
     return {
-        getName,
-        toggleIsDone,
-        getIsDone
+        name: todoName,
+        isDone: done,
+
+        getName() {
+            return this.name;
+        },
+
+        toggleIsDone() {
+            this.isDone = !this.isDone;
+        },
+
+        getIsDone() {
+            return this.isDone;
+        }
     };
 }
+
 
 function createNewList(listName) {
     if (listName === '') {
@@ -156,7 +168,9 @@ function createNewList(listName) {
     }
     mainListContainer.addList(createListObject(listName));
     createListElement(listName);
+    updateLocalStorage();
 }
+
 
 function deleteList(listName) {
     const todos = mainListContainer.getList(listName).getTodos();
@@ -176,7 +190,10 @@ function deleteList(listName) {
     }
 
     displaySelectedList(mainListContainer.getCurrentList().getName());
+
+    updateLocalStorage();
 }
+
 
 function displaySelectedList(listName) {
     clearTodoDisplay();
@@ -185,9 +202,10 @@ function displaySelectedList(listName) {
     setActiveList(list);
     const todos = list.getTodos();
     todos.forEach(todo => {
-        createTodoElement(todo.getName());
+        createTodoElement(todo.getName(), todo.getIsDone());
     });
 }
+
 
 function setActiveList(list) {
     const listElements = document.querySelectorAll('.list');
@@ -203,18 +221,24 @@ function setActiveList(list) {
     };
 }
 
+
 function createNewTodo(todoName) {
     if (todoName === '') {
         return;
     }
+
     let currentList = mainListContainer.getCurrentList();
     let newTodo = createTodoObject(todoName);
     currentList.addTodo(newTodo);
     if (currentList.getName() != 'All') {
         mainListContainer.getList('All').addTodo(newTodo);
     }
-    createTodoElement(todoName);
+
+    createTodoElement(todoName, newTodo.getIsDone());
+
+    updateLocalStorage();
 }
+
 
 function deleteTodo(todo) {
     deleteTodoElement(todo);
@@ -229,23 +253,53 @@ function deleteTodo(todo) {
             }
         }
     }
+
+    updateLocalStorage();
 }
+
 
 function toggleTodoCheckedState(todoName) {
     const currentList = mainListContainer.getCurrentList();
     const todo = currentList.getTodo(todoName);
     todo.toggleIsDone();
+
+    updateLocalStorage();
+}
+
+
+function updateLocalStorage() {
+    localStorage.clear();
+    localStorage.setItem('listData', JSON.stringify(mainListContainer.toJSON()));
+    // console.log(JSON.parse(localStorage.getItem('listData')));
 }
 
 
 // Test -----------------------------------------------------
+
 const allList = createListObject('All');
 mainListContainer.addList(allList);
 mainListContainer.setCurrentList(allList);
 displaySelectedList(allList.getName());
 
 createNewList('Test');
+let testList = mainListContainer.getList('Test');
+let newTodo = createTodoObject('New Todo');
+testList.addTodo(newTodo);
+let another = createTodoObject('Another');
+testList.addTodo(another);
+
+
 // ----------------------------------------------------------
+
+
+
+// localStorage.clear();
+updateLocalStorage();
+// console.log(mainListContainer.toJSON());
+// localStorage.setItem('listData', JSON.stringify(mainListContainer.toJSON()));
+console.log(JSON.parse(localStorage.getItem('listData')));
+
+
 
 export {
     mainListContainer,
