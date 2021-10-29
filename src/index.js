@@ -270,34 +270,32 @@ function toggleTodoCheckedState(todoName) {
 function updateLocalStorage() {
     localStorage.clear();
     localStorage.setItem('listData', JSON.stringify(mainListContainer.toJSON()));
-    // console.log(JSON.parse(localStorage.getItem('listData')));
 }
 
 
-// Test -----------------------------------------------------
+function initPage() {
+    if (localStorage.getItem('listData')) {
+        const listData = JSON.parse(localStorage.getItem('listData'));
+        mainListContainer.fromJSON(listData);
 
-const allList = createListObject('All');
-mainListContainer.addList(allList);
-mainListContainer.setCurrentList(allList);
-displaySelectedList(allList.getName());
+        const allList = mainListContainer.getList('All');
+        mainListContainer.setCurrentList(allList);
+        displaySelectedList(allList.getName());
+    } else {
+        const allList = createListObject('All');
+        mainListContainer.addList(allList);
+        mainListContainer.setCurrentList(allList);
+        displaySelectedList(allList.getName());
 
-createNewList('Test');
-let testList = mainListContainer.getList('Test');
-let newTodo = createTodoObject('New Todo');
-testList.addTodo(newTodo);
-let another = createTodoObject('Another');
-testList.addTodo(another);
+        createNewList('Test');
+        const testList = mainListContainer.getList('Test');
+        testList.addTodo(createTodoObject('New'));
+    }
+}
 
-
-// ----------------------------------------------------------
-
-
-
-// localStorage.clear();
-updateLocalStorage();
-// console.log(mainListContainer.toJSON());
-// localStorage.setItem('listData', JSON.stringify(mainListContainer.toJSON()));
-console.log(JSON.parse(localStorage.getItem('listData')));
+localStorage.clear();
+initPage();
+console.log(JSON.stringify(mainListContainer.toJSON()));
 
 
 
